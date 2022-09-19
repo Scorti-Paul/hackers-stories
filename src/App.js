@@ -31,11 +31,16 @@ const list = [
 
 
 const App = () => {
+
+  const handleChange = event => {
+    console.log(event.target.value)
+  }
+
   return (
     <div>
       <h1>My Hacker Stories</h1>
       <label htmlFor="search">Search: </label>
-      <input type="text" id="search" />
+      <input type="text" id="search" onChange={handleChange} />
 
       <hr></hr>
 

@@ -1,23 +1,60 @@
-import logo from './logo.svg';
-import './App.css';
+
+
+const welcome = {
+  greetings: 'Hey',
+  title: 'Paul Scorti'
+}
+
+function getTitle(title) {
+  return title;
+}
+
+
+const list = [
+  {
+    title: 'React',
+    url: 'https://reactjs.org',
+    author: 'Jordan Walke',
+    num_comment: 3,
+    points: 4,
+    objectID: 0,
+  },
+  {
+    title: 'Redux',
+    url: 'https://reduc.js.org',
+    author: 'Dan Abramov, Andrew Clark',
+    num_comment: 2,
+    points: 5,
+    objectID: 1,
+  }
+];
+
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>My Hacker Stories</h1>
+      <label htmlFor="search">Search: </label>
+      <input type="text" id="search" />
+
+      <hr></hr>
+      {list.map(function (item, index) {
+        return <div key={index}>{item.title}</div>
+      })}
+
+      {list.map(item => (
+
+        <div key={item.objectID}>
+          <span>
+            <a href={item.url}>{item.title} </a>
+          </span>
+          <span>{item.author} </span>
+          <span>{item.num_comment} </span>
+          <span>{item.points} </span>
+        </div>
+      )
+      )}
     </div>
   );
 }

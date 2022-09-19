@@ -30,8 +30,7 @@ const list = [
 ];
 
 
-function App() {
-
+const App = () => {
   return (
     <div>
       <h1>My Hacker Stories</h1>

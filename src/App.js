@@ -45,8 +45,8 @@ function App() {
   );
 }
 
-function List() {
-  return list.map(item => (
+const List = () =>
+  list.map(item => (
     <div key={item.objectID}>
       <span>
         <a href={item.url}>{item.title}</a>
@@ -55,9 +55,7 @@ function List() {
       <span>{item.num_comment} </span>
       <span>{item.points} </span>
     </div>
-  )
-  )
-}
+  ));
 
 
 

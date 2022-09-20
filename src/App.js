@@ -1,3 +1,4 @@
+import { useState } from "react";
 
 
 const welcome = {
@@ -15,9 +16,7 @@ function getTitle(title) {
 
 const App = () => {
 
-  const handleChange = event => {
-    console.log(event.target.value)
-  }
+
 
   const stories = [
     {
@@ -60,14 +59,24 @@ const App = () => {
       sellingPrice: 20,
       objectID: 2
     }
-  ]
+  ];
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleChange = event => {
+    setSearchTerm(event.target.value)
+  }
 
   return (
     <div>
       <h1>My Hacker Stories</h1>
       <label htmlFor="search">Search: </label>
-      <input type="text" id="search" onChange={handleChange} />
+      {/* <input type="text" id="search" onChange={handleChange} /> */}
+      <input type="text" id="search" onChange={e => setSearchTerm(e.target.value)} />
 
+      <p>
+        Searching for <strong>{searchTerm}</strong>
+      </p>
 
       <List list={stories} />
 
@@ -99,6 +108,8 @@ const Shop = props =>
       <div>Unit Price: {item.unitPrice} </div>
       <div>Selling Price: {item.sellingPrice} </div>
     </div>
-  ))
+  ));
+
+
 
 export default App;

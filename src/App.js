@@ -1,4 +1,5 @@
 import { useState } from "react";
+import './App.css'
 
 
 const welcome = {
@@ -40,51 +41,67 @@ const App = () => {
   const shopItems = [
     {
       item: 'Milk',
-      quantity: 23,
-      unitPrice: 34,
-      sellingPrice: 36,
+      price: 36,
+      image: './milk.png',
       objectID: 0
     },
     {
-      item: 'Milo',
-      quantity: 60,
-      unitPrice: 29,
-      sellingPrice: 33,
+      item: 'Hollandia',
+      price: 33,
+      image: './hollandia.png',
       objectID: 1
     },
     {
-      item: 'Hollandia',
-      quantity: 50,
-      unitPrice: 18,
-      sellingPrice: 20,
+      item: 'Milo',
+      price: 20,
+      image: './milo.png',
       objectID: 2
     }
   ];
 
-  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleChange = event => {
-    setSearchTerm(event.target.value)
+  const handleSearch = event => {
+    console.log(event.target.value)
   }
 
   return (
     <div>
       <h1>My Hacker Stories</h1>
-      <label htmlFor="search">Search: </label>
-      {/* <input type="text" id="search" onChange={handleChange} /> */}
-      <input type="text" id="search" onChange={e => setSearchTerm(e.target.value)} />
 
-      <p>
-        Searching for <strong>{searchTerm}</strong>
-      </p>
+      <Search onSearch={handleSearch} />
 
       <List list={stories} />
 
       <hr />
 
-      <Shop shop={shopItems} />
+      <div className="wrapper">
+        <Shop shop={shopItems} />
+      </div>
     </div>
   );
+}
+
+const Search = props => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleChange = event => {
+    setSearchTerm(event.target.value)
+
+    props.handleSearch(event)
+  }
+
+  return (
+    <div>
+      <label htmlFor="search">Search: </label>
+      <input type="text" id="search" onChange={handleChange} />
+      {/* <input type="text" id="search" onChange={e => setSearchTerm(e.target.value)} /> */}
+
+      <p>
+        Searching for <strong>{searchTerm}</strong>
+      </p>
+
+    </div>
+  )
 }
 
 const List = props =>
@@ -102,14 +119,22 @@ const List = props =>
 
 const Shop = props =>
   props.shop.map(item => (
-    <div key={item.objectID}>
-      <div>Item: {item.item}</div>
-      <div>quantity: {item.quantity}</div>
-      <div>Unit Price: {item.unitPrice} </div>
-      <div>Selling Price: {item.sellingPrice} </div>
+    <div key={item.objectID} className="shopItems">
+      <div className="top">
+        <div className="like">
+          <img src="favorite.png" />
+        </div>
+        <img src={item.image} />
+      </div>
+      <div className="item-price">
+        <div className="item">{item.item}</div>
+        <div>GH₵ {item.price}</div>
+      </div>
+      <div className="cart">
+        <a href="#">ADD TO CART</a>
+      </div>
     </div>
   ));
-
 
 
 export default App;

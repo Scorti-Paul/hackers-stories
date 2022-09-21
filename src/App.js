@@ -17,8 +17,6 @@ function getTitle(title) {
 
 const App = () => {
 
-
-
   const stories = [
     {
       title: 'React',
@@ -59,10 +57,17 @@ const App = () => {
     }
   ];
 
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = event => {
-    console.log(event.target.value)
+    setSearchTerm(event.target.value)
   }
+
+  const searchedStories = stories.filter(story =>
+    story.title.toLowerCase().includes((searchTerm.toLowerCase()))
+  );
+
+
 
   return (
     <div>
@@ -70,7 +75,7 @@ const App = () => {
 
       <Search onSearch={handleSearch} />
 
-      <List list={stories} />
+      <List list={searchedStories} />
 
       <hr />
 
@@ -82,22 +87,15 @@ const App = () => {
 }
 
 const Search = props => {
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const handleChange = event => {
-    setSearchTerm(event.target.value)
-
-    props.handleSearch(event)
-  }
 
   return (
     <div>
       <label htmlFor="search">Search: </label>
-      <input type="text" id="search" onChange={handleChange} />
+      <input type="text" id="search" onChange={props.onSearch} />
       {/* <input type="text" id="search" onChange={e => setSearchTerm(e.target.value)} /> */}
 
       <p>
-        Searching for <strong>{searchTerm}</strong>
+        Searching for <strong>{props.searchTerm}</strong>
       </p>
 
     </div>

@@ -11,8 +11,18 @@ function getTitle(title) {
   return title;
 }
 
+// Destructing an object
+const user = {
+  firstName: 'Robin',
+  pet: {
+    name: 'Trixi'
+  }
+}
 
+console.log(`Destruction: ${user.firstName} has a pet called ${user.pet.name}`)
 
+const { firstName, pet: { name } } = user
+console.log(`Deeper Destruction: ${firstName} has a pet called ${name}`)
 
 
 const App = () => {
@@ -86,37 +96,39 @@ const App = () => {
   );
 }
 
-const Search = props => {
-
-  return (
-    <div>
-      <label htmlFor="search">Search: </label>
-      <input type="text" id="search" value={props.search} onChange={props.onSearch} />
-      {/* <input type="text" id="search" onChange={e => setSearchTerm(e.target.value)} /> */}
-
-      <p>
-        Searching for <strong>{props.searchTerm}</strong>
-      </p>
-
-    </div>
-  )
-}
-
-const List = props =>
-  props.list.map(item => (
-    <div key={item.objectID}>
-      <span>
-        <a href={item.url}>{item.title}</a>
-      </span>
-      <span> {item.author} </span>
-      <span>{item.num_comment} </span>
-      <span>{item.points} </span>
-    </div>
-  ));
+const Search = ({ search, onSearch }) => (
+  <div>
+    <label htmlFor="search">Search: </label>
+    <input
+      type="text"
+      id="search"
+      value={search}
+      onChange={onSearch}
+    />
+  </div>
+)
 
 
-const Shop = props =>
-  props.shop.map(item => (
+// const List = ({ list }) =>
+//   list.map((objectID, ...item) => <Item key={objectID} {...item} />)
+
+const List = ({ list }) =>
+  list.map(item => <Item key={item.objectID} item={item} />)
+
+const Item = ({ item }) => (
+  <div>
+    <span>
+      <a href={item.url}>{item.title}</a>
+    </span>
+    <span> {item.author} </span>
+    <span>{item.num_comment} </span>
+    <span>{item.points} </span>
+  </div>
+);
+
+
+const Shop = ({ shop }) =>
+  shop.map(item => (
     <div key={item.objectID} className="shopItems">
       <div className="top">
         <div className="like">

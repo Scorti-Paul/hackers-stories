@@ -93,7 +93,13 @@ const App = () => {
     <div>
       <h1>My Hacker Stories</h1>
 
-      <Search search={searchTerm} onSearch={handleSearch} />
+      <InputWithLabel
+        id="search"
+        label="Search"
+        value={searchTerm}
+        onInputChange={handleSearch}
+      />
+
 
       <List list={searchedStories} />
 
@@ -106,16 +112,6 @@ const App = () => {
   );
 }
 
-const Search = ({ search, onSearch }) => (
-  <>
-    <InputWithLabel
-      id="search"
-      label="Search"
-      value={searchTerm}
-      onInputChange={handleSearch}
-    />
-  </>
-)
 
 const InputWithLabel = ({ id, label, value, type = 'text', onInputChange }) => (
   <>

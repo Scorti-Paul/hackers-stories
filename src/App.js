@@ -107,7 +107,7 @@ const App = () => {
 }
 
 const Search = ({ search, onSearch }) => (
-  <div>
+  <>
     <label htmlFor="search">Search: </label>
     <input
       type="text"
@@ -115,7 +115,7 @@ const Search = ({ search, onSearch }) => (
       value={search}
       onChange={onSearch}
     />
-  </div>
+  </>
 )
 
 
@@ -127,6 +127,7 @@ const List = ({ list }) =>
 
 const Item = ({ item }) => (
   <div>
+
     <span>
       <a href={item.url}>{item.title}</a>
     </span>

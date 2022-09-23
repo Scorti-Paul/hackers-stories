@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './App.css'
 
 
@@ -24,6 +24,15 @@ console.log(`Destruction: ${user.firstName} has a pet called ${user.pet.name}`)
 const { firstName, pet: { name } } = user
 console.log(`Deeper Destruction: ${firstName} has a pet called ${name}`)
 
+const useSemiPersistentState = (key, initialState) => {
+  const [value, setValue] = useState(
+    localStorage.getItem(key) || initialState
+  );
+
+  useEffect(() => localStorage.setItem(key, value), [value, key])
+
+  return [value, setValue]
+}
 
 const App = () => {
 
@@ -67,7 +76,8 @@ const App = () => {
     }
   ];
 
-  const [searchTerm, setSearchTerm] = useState('React');
+  const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
+
 
   const handleSearch = event => {
     setSearchTerm(event.target.value)

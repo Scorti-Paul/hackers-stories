@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import './App.css'
 
 
@@ -34,50 +34,60 @@ const useSemiPersistentState = (key, initialState) => {
   return [value, setValue]
 }
 
+
+const initialStories = [
+  {
+    title: 'React',
+    url: 'https://reactjs.org',
+    author: 'Jordan Walke',
+    num_comment: 3,
+    points: 4,
+    objectID: 0,
+  },
+  {
+    title: 'Redux',
+    url: 'https://reduc.js.org',
+    author: 'Dan Abramov, Andrew Clark',
+    num_comment: 2,
+    points: 5,
+    objectID: 1,
+  }
+];
+
+const shopItems = [
+  {
+    item: 'Milk',
+    price: 36,
+    image: './milk.png',
+    objectID: 0
+  },
+  {
+    item: 'Hollandia',
+    price: 33,
+    image: './hollandia.png',
+    objectID: 1
+  },
+  {
+    item: 'Milo',
+    price: 20,
+    image: './milo.png',
+    objectID: 2
+  }
+];
+
 const App = () => {
 
-  const stories = [
-    {
-      title: 'React',
-      url: 'https://reactjs.org',
-      author: 'Jordan Walke',
-      num_comment: 3,
-      points: 4,
-      objectID: 0,
-    },
-    {
-      title: 'Redux',
-      url: 'https://reduc.js.org',
-      author: 'Dan Abramov, Andrew Clark',
-      num_comment: 2,
-      points: 5,
-      objectID: 1,
-    }
-  ];
-
-  const shopItems = [
-    {
-      item: 'Milk',
-      price: 36,
-      image: './milk.png',
-      objectID: 0
-    },
-    {
-      item: 'Hollandia',
-      price: 33,
-      image: './hollandia.png',
-      objectID: 1
-    },
-    {
-      item: 'Milo',
-      price: 20,
-      image: './milo.png',
-      objectID: 2
-    }
-  ];
 
   const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
 
+  const [stories, setStories] = useState(initialStories);
+
+  const handleRemoveStory = item => {
+    const newStories = stories.filter(
+      story => item.objectID !== story.objectID
+    )
+    setStories(newStories)
+  }
 
   const handleSearch = event => {
     setSearchTerm(event.target.value)
@@ -93,6 +103,7 @@ const App = () => {
     <div>
       <h1>My Hacker Stories</h1>
 
+      <strong>Search: </strong>
       <InputWithLabel
         id="search"
         label="Search"
@@ -101,7 +112,7 @@ const App = () => {
       />
 
 
-      <List list={searchedStories} />
+      <List list={searchedStories} onRemoveItem={handleRemoveStory} />
 
       <hr />
 
@@ -113,36 +124,61 @@ const App = () => {
 }
 
 
-const InputWithLabel = ({ id, label, value, type = 'text', onInputChange }) => (
-  <>
-    <label htmlFor={id}>{label}</label>
-    <input
-      type={type}
-      id={id}
-      value={value}
-      onChange={onInputChange}
-    />
-  </>
-)
+const InputWithLabel = ({ id, value, type = 'text', onInputChange, isFocused, children }) => {
+
+  const inputRef = useRef();
+
+  useEffect(() => {
+    if (isFocused && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isFocused]);
+
+  return (
+    <>
+      <label htmlFor={id}>{children}</label>
+      <input
+        ref={inputRef}
+        type={type}
+        id={id}
+        value={value}
+        onChange={onInputChange}
+      />
+    </>
+  )
+}
 
 
 // const List = ({ list }) =>
 //   list.map((objectID, ...item) => <Item key={objectID} {...item} />)
 
-const List = ({ list }) =>
-  list.map(item => <Item key={item.objectID} item={item} />)
+const List = ({ list, onRemoveItem }) =>
+  list.map(item => <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />)
 
-const Item = ({ item }) => (
-  <div>
 
-    <span>
-      <a href={item.url}>{item.title}</a>
-    </span>
-    <span> {item.author} </span>
-    <span>{item.num_comment} </span>
-    <span>{item.points} </span>
-  </div>
-);
+const Item = ({ item, onRemoveItem }) => {
+
+  const handleRemoveItem = () => {
+    onRemoveItem(item);
+  }
+
+  return (
+    <div>
+
+      <span>
+        <a href={item.url}>{item.title}</a>
+      </span>
+      <span> {item.author} </span>
+      <span>{item.num_comment} </span>
+      <span>{item.points} </span>
+      <span>
+        <button type="button" onClick={() => onRemoveItem(item)}>
+          Dismiss
+        </button>
+      </span>
+    </div>
+  )
+}
 
 
 const Shop = ({ shop }) =>
